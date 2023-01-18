@@ -1,14 +1,9 @@
-"use strict";
+'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-    await queryInterface.createTable("blog_posts", {
+    const blogPostsTable = await queryInterface.createTable('blog_posts',
+    {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -16,22 +11,21 @@ module.exports = {
         allowNull: false,
       },
       title: {
-        type: Sequelize.STRING(255),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       content: {
-        type: Sequelize.STRING(255),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: "users",
-          key: "id",
+          model: 'users',
+          key: 'id',
         },
         onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       published: {
         type: Sequelize.DATE,
@@ -42,15 +36,11 @@ module.exports = {
         allowNull: false,
       },
     });
+
+    return blogPostsTable;
   },
 
-  down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.dropTable("blog_posts");
-  },
+  down: async (queryInterface, _Sequelize) => {
+    return await queryInterface.dropTable('blog_posts');
+  }
 };
